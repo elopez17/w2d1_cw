@@ -1,5 +1,7 @@
 require "io/console"
 require_relative "errors.rb"
+require_relative "board.rb"
+require_relative "display.rb"
 
 KEYMAP = {
   " " => :space,
@@ -25,10 +27,10 @@ KEYMAP = {
 }
 
 MOVES = {
-  left: [0, -1],
-  right: [0, 1],
-  up: [-1, 0],
-  down: [1, 0]
+  left: [-1, 0],
+  right: [1, 0],
+  up: [0, -1],
+  down: [0, 1]
 }
 
 class Cursor
@@ -45,6 +47,9 @@ class Cursor
       key = KEYMAP[read_char]
       handle_key(key)
     rescue InvalidKeyError => e
+      puts e.message
+      retry
+    rescue RangeError => e
       puts e.message
       retry
     end
@@ -86,7 +91,7 @@ class Cursor
     when :return, :space
       return @cursor_pos
     when :left, :right, :up, :down
-      update_pos
+      update_pos(MOVES[key])
       return nil
     when :ctrl_c
       Process.exit(0)
@@ -96,5 +101,21 @@ class Cursor
   end
 
   def update_pos(diff)
+    @cursor_pos.map!.with_index { |elem, idx| elem + diff[idx] }
+    if @board.out_of_range?(@cursor_pos)
+      @cursor_pos.map!.with_index { |elem, idx| elem - diff[idx] }
+      raise RangeError
+    end
+    @cursor_pos
+  end
+end
+
+if __FILE__ == $0
+  c = Cursor.new([0, 0], Board.new())
+  d = Display.new(c.board, c)
+  loop do
+    c.get_input
+    d.render
+    print c.cursor_pos, "\n"
   end
 end
