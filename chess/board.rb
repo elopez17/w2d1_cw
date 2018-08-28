@@ -8,9 +8,47 @@ class Board
     for i in 0...8 do
       for j in 0...8 do
         if i == 0 || i == 1 || i == 6 || i == 7
-          self[[i,j]] = Piece.new(:piece, @rows, [i, j])
+          
+          if i == 1 || i == 6
+            if i == 1
+              self[[i,j]] = Pawn.new(:team1, @rows, [i, j])
+            else
+              self[[i,j]] = Pawn.new(:team2, @rows, [i, j])
+            end
+          else
+            if i == 0# :team1
+              
+              if j == 0 || j == 7
+                self[[i,j]] = Rook.new(:team1, @rows, [i, j])
+              elsif j == 1 || j == 6
+                self[[i,j]] = Knight.new(:team1, @rows, [i, j])
+              elsif j == 2 || j == 5
+                self[[i,j]] = Bishop.new(:team1, @rows, [i, j])
+              elsif j == 3
+                self[[i,j]] = Queen.new(:team1, @rows, [i, j])
+              elsif j == 4
+                self[[i,j]] = King.new(:team1, @rows, [i, j])
+              end
+              
+            else# :team2
+              
+              if j == 0 || j == 7
+                self[[i,j]] = Rook.new(:team2, @rows, [i, j])
+              elsif j == 1 || j == 6
+                self[[i,j]] = Knight.new(:team2, @rows, [i, j])
+              elsif j == 2 || j == 5
+                self[[i,j]] = Bishop.new(:team2, @rows, [i, j])
+              elsif j == 3
+                self[[i,j]] = Queen.new(:team2, @rows, [i, j])
+              elsif j == 4
+                self[[i,j]] = King.new(:team2, @rows, [i, j])
+              end
+              
+            end
+          end
+          
         else
-          self[[i,j]] = NullPiece.new(:nulls, @rows, [i, j])
+          self[[i,j]] = NullPiece.instance
         end
       end
     end

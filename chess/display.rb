@@ -21,7 +21,7 @@ class Display
       
       for t in 0...5 do
         for i in 0...8 do
-          if @board[[i, j]].is_a?(NullPiece) 
+          if @board[[i, j]].is_a?(NullPiece)
             piece = " "
           elsif t == 2
             piece = "♟"

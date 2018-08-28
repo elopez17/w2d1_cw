@@ -111,8 +111,9 @@ class Cursor
 end
 
 if __FILE__ == $0
-  c = Cursor.new([0, 0], Board.new())
-  d = Display.new(c.board, c)
+  b = Board.new()
+  c = Cursor.new([0, 0], b)
+  d = Display.new(b, c)
   loop do
     c.get_input
     d.render
