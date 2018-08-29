@@ -12,10 +12,10 @@ class Display
     system('clear')
     for j in 0...8 do
       if j.even?
-        color1 = :green
+        color1 = :black
         color2 = :cyan
       else
-        color2 = :green
+        color2 = :black
         color1 = :cyan
       end
       
@@ -24,17 +24,18 @@ class Display
           if @board[[i, j]].is_a?(NullPiece)
             piece = " "
           elsif t == 2
-            piece = "♟"
+            piece = @board[[i, j]].symbol
+            team_color = @board[[i, j]].color == :team2 ? :white : :light_green
           else
             piece = " "
           end
           # piece = " "
           if [i, j] == @cursor.cursor_pos
-            print "     #{piece}    ".colorize(:color => :light_blue, :background => :red)
+            print "     #{piece}    ".colorize(:color => team_color, :background => :red)
           elsif i.even?
-            print "     #{piece}    ".colorize(:color => :light_blue, :background => color1)
+            print "     #{piece}    ".colorize(:color => team_color, :background => color1)
           else
-            print "     #{piece}    ".colorize(:color => :light_blue, :background => color2)
+            print "     #{piece}    ".colorize(:color => team_color, :background => color2)
           end
           
         end

@@ -20,8 +20,12 @@ class Bishop < Piece
       super
     end
     
+    def move_dirs
+      {:horizontal => false, :vertical => false, :diagnal => true}
+    end
+    
     def symbol
-      if @color == :player1
+      if @color == :team1
         return "♝"
       else
         return "♗"
@@ -34,8 +38,12 @@ class Rook < Piece
       super
     end
     
+    def move_dirs
+      {:horizontal => true, :vertical => true, :diagnal => false}
+    end
+    
     def symbol
-      if @color == :player1
+      if @color == :team1
         return "♜"
       else
         return "♖"
@@ -48,8 +56,12 @@ class Queen < Piece
       super
     end
     
+    def move_dirs
+      {:horizontal => true, :vertical => true, :diagnal => true}
+    end
+    
     def symbol
-      if @color == :player1
+      if @color == :team1
         return "♛"
       else
         return "♕"
@@ -62,8 +74,12 @@ class King < Piece
       super
     end
     
+    def move_diffs
+      1
+    end
+    
     def symbol
-      if @color == :player1
+      if @color == :team1
         return "♚"
       else
         return "♔"
@@ -76,8 +92,12 @@ class Knight < Piece
       super
     end
     
+    def move_diffs
+      3
+    end
+    
     def symbol
-      if @color == :player1
+      if @color == :team1
         return "♞"
       else
         return "♘"
@@ -91,7 +111,7 @@ class Pawn < Piece
     end
     
     def symbol
-      if @color == :player1
+      if @color == :team1
         return "♟"
       else
         return "♙"
