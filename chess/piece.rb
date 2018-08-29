@@ -15,13 +15,37 @@ class NullPiece < Piece
   end
 end
 
+module Sliders
+  #access to move_dirs
+  def moves?(start_pos, end_pos)
+    movement = move_dirs
+    abs_diff = start_pos.map.with_index { |el, i| (el - end_pos[i]).abs }
+    if movement[:vertical]
+      return true if abs_diff[0] == 0 ||  abs_diff[1] == 0
+    end  
+    if movement[:diagnal]
+      return true if abs_diff[0] == abs_diff[1]
+    end
+    false
+  end
+end
+
+module Steppies
+  #access to move_diffs
+  def moves?(start_pos, end_pos)
+    diffs = start_pos.map.with_index { |el, i| (el - end_pos[i]).abs }
+    move_diffs.include?(diffs)
+  end
+end
+
 class Bishop < Piece
+  include Sliders
     def initialize(color, board, pos)
       super
     end
     
     def move_dirs
-      {:horizontal => false, :vertical => false, :diagnal => true}
+      {:vertical => false, :diagnal => true}
     end
     
     def symbol
@@ -34,12 +58,13 @@ class Bishop < Piece
 end
 
 class Rook < Piece
+  include Sliders
     def initialize(color, board, pos)
       super
     end
     
     def move_dirs
-      {:horizontal => true, :vertical => true, :diagnal => false}
+      {:vertical => true, :diagnal => false}
     end
     
     def symbol
@@ -52,12 +77,13 @@ class Rook < Piece
 end
 
 class Queen < Piece
+  include Sliders
     def initialize(color, board, pos)
       super
     end
     
     def move_dirs
-      {:horizontal => true, :vertical => true, :diagnal => true}
+        {:vertical => true, :diagnal => true}
     end
     
     def symbol
@@ -70,12 +96,22 @@ class Queen < Piece
 end
 
 class King < Piece
+  include Steppies
     def initialize(color, board, pos)
       super
     end
     
     def move_diffs
-      1
+      [
+        [0, 1],
+        [0, -1],
+        [1, 1],
+        [-1, 1],
+        [-1, -1],
+        [1, -1],
+        [1, 0],
+        [-1, 0]
+      ]
     end
     
     def symbol
@@ -88,12 +124,22 @@ class King < Piece
 end
 
 class Knight < Piece
+  include Steppies
     def initialize(color, board, pos)
       super
     end
     
     def move_diffs
-      3
+      [
+        [1, 2],
+        [1, -2],
+        [-2, 1],
+        [2, 1],
+        [-1, 2],
+        [-1, -2],
+        [-2, 1],
+        [-2, -1]
+      ]
     end
     
     def symbol

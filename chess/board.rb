@@ -58,6 +58,11 @@ class Board
     raise "There is no piece here"  if self[start_pos].is_a?(NullPiece)
     raise "Out of bounds" if out_of_range?(end_pos) || out_of_range?(start_pos)
     
+    unless self[start_pos].moves?(start_pos, end_pos)
+      raise InvalidMoveError
+      return
+    end
+    
     self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
     self[end_pos].pos, self[start_pos].pos = end_pos, start_pos
   end

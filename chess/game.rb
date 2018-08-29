@@ -11,24 +11,28 @@ class Game
   
   def play 
     loop do
-      @display.render
-      start_pos = nil 
-      puts "test1"
-      while start_pos.nil?
-        start_pos = @cursor.get_input
+      begin
         @display.render
+        start_pos = nil 
+        while start_pos.nil?
+          start_pos = @cursor.get_input
+          @display.render
+        end
+        end_pos = nil
+        while end_pos.nil?
+          end_pos = @cursor.get_input
+          @display.render
+        end
+        print @cursor.cursor_pos, "\n"
+        @board.move_piece(start_pos, end_pos)
+      rescue InvalidMoveError => e
+        puts e.message
+        retry
       end
-      print start_pos, "\n"
-      end_pos = nil
-      while end_pos.nil?
-        end_pos = @cursor.get_input
-        @display.render
-      end
-      print @cursor.cursor_pos, "\n"
-      print start_pos, "\n", end_pos, "\n"
-      @board.move_piece(start_pos, end_pos)
+      
     end
   end
+  
 end
 
 if __FILE__ == $0

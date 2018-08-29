@@ -9,3 +9,9 @@ class RangeError < StandardError
     super
   end
 end
+
+class InvalidMoveError < StandardError
+  def initialize(msg="Invalid move, try again")
+    super
+  end
+end
